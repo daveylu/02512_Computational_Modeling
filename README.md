@@ -1,2 +1,2 @@
-# 02512_Computational_Modeling
+# 02512 Computational Modeling
  HW for 02512
