@@ -102,3 +102,6 @@ def main(input_file):
             G[i - 1][j] = int(input[i][j])
 
     return intersect_mst(n, G)
+
+print(main("sample1.txt"))
+print(main("sample2.txt"))
