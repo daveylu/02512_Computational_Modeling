@@ -1,3 +1,5 @@
+import copy
+
 # the following three functions are taken from:
 # https://www.cs.cmu.edu/~112/notes/notes-2d-lists.html#printing
 def repr2dList(L):
@@ -30,6 +32,34 @@ def read_file(path):
     with open(path, "rt") as f:
         return f.read()
 
+def DFS(n, G, start, target):
+    stack = [start]
+    seen = []
+    while(True):
+        if(len(stack) == 0): return False
+        v = stack.pop(0)
+        seen.append(v)
+        for i in range(n):
+            if(G[v][i] > 0 and i not in seen):
+                if(i == target): return True
+                else: stack.insert(0, i)
+
+def remove_cycle_edges(n, graph_T, T, same_weight_edges):
+    remove = []
+    for edge in same_weight_edges:
+        u, v = edge[1], edge[2]
+        #remove the edge we're looking at from graph_T and then DFS from u to v
+        temp_graph_T = copy.deepcopy(graph_T)
+        temp_graph_T[u][v] = 0
+        temp_graph_T[v][u] = 0
+        if(DFS(n, temp_graph_T, u, v) == True):
+            remove.append((u, v))
+    for edge in remove:
+        T.remove(edge)
+        u, v = edge
+        graph_T[u][v] = 0
+        graph_T[v][u] = 0
+    return
 
 #edge format: [weight, start vertex, stop vertex]
 def intersect_mst_helper(graph_T, T, membership, edge):
@@ -41,14 +71,6 @@ def intersect_mst_helper(graph_T, T, membership, edge):
         graph_T[u][v] = 1
         graph_T[v][u] = 1
     return
-
-def find_cycles(n, graph_T, T, same_weight_edges):
-    remove = []
-    for edge in range(same_weight_edges):
-        u, v = edge[1], edge[2]
-        #remove the edge we're looking at from graph_T and then DFS from u to v
-    return
-    
 
 def intersect_mst(n, G):
     T = []
@@ -73,7 +95,8 @@ def intersect_mst(n, G):
         else:
             intersect_mst_helper(graph_T, T, membership, edges[i])
             same_weight_edges.append(edges[i])
-            find_cycles(n, graph_T, T, same_weight_edges)
+            remove_cycle_edges(n, graph_T, T, same_weight_edges)
+            same_weight_edges = []
     return T
 
 def main(input_file):
@@ -89,4 +112,4 @@ def main(input_file):
             G[i - 1][j] = int(input[i][j])
     return intersect_mst(n, G)
 
-print(main("sample1.txt"))
+print(main("sample2.txt"))
