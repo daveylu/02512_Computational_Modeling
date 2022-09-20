@@ -1,5 +1,12 @@
 import copy
+"""
+To run the code: call main(input_file), where input_file is the name of the
+desired input file.
 
+The input file must be in the exact same format as the sample files.
+
+main() will both print and return the intersection MST as a list of edges.
+"""
 # the following function is taken from:
 # https://www.cs.cmu.edu/~112/notes/notes-strings.html#basicFileIO
 
@@ -80,8 +87,9 @@ def intersect_mst(n, G):
             same_weight_edges = []
     return T
 
-#takes as input, the name of the file as a string
+#takes as input, the name of the adjacency matrix file as a string
 #files must be in the same format as the sample files
+#prints and returns the intersection MST as a list of edges
 def main(input_file):
     input = read_file(input_file).splitlines()
     
@@ -92,6 +100,6 @@ def main(input_file):
     for i in range(1, n + 1):               #the file given
         for j in range(n):
             G[i - 1][j] = int(input[i][j])
-    
-    return intersect_mst(n, G)
 
+    print(intersect_mst(n, G))
+    return intersect_mst(n, G)
