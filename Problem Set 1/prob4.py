@@ -1,11 +1,9 @@
 import copy
+import sys
 """
-To run the code: call main(input_file), where input_file is the name of the
-desired input file.
+To run the code: in a CLI, call: python prob4.py {insert file name here}
 
 The input file must be in the exact same format as the sample files.
-
-main() will return the intersection MST as a list of edges.
 """
 # the following function is taken from:
 # https://www.cs.cmu.edu/~112/notes/notes-strings.html#basicFileIO
@@ -90,7 +88,8 @@ def intersect_mst(n, G):
 #takes as input, the name of the adjacency matrix file as a string
 #files must be in the same format as the sample files
 #returns the intersection MST as a list of edges
-def main(input_file):
+def main():
+    input_file = sys.argv[-1]
     input = read_file(input_file).splitlines()
     
     n = int(input[0])                       
@@ -100,8 +99,10 @@ def main(input_file):
     for i in range(1, n + 1):               #the file given
         for j in range(n):
             G[i - 1][j] = int(input[i][j])
+    
+    MST = intersect_mst(n, G)
 
-    return intersect_mst(n, G)
+    print(MST)
+    return MST
 
-print(main("sample1.txt"))
-print(main("sample2.txt"))
+main()
