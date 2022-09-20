@@ -1,4 +1,5 @@
-# the following three functions are taken from https://www.cs.cmu.edu/~112/notes/notes-2d-lists.html#printing
+# the following three functions are taken from:
+# https://www.cs.cmu.edu/~112/notes/notes-2d-lists.html#printing
 def repr2dList(L):
     if (L == []): return '[]'
     output = [ ]
@@ -29,19 +30,51 @@ def read_file(path):
     with open(path, "rt") as f:
         return f.read()
 
+
+#edge format: [weight, start vertex, stop vertex]
+def intersect_mst_helper(graph_T, T, membership, edge):
+    u, v = edge[1], edge[2]
+    if(membership[u] != membership[v]):
+        membership[v] += membership[u]
+        membership[u] = membership[v]
+        T.append((u, v))
+        graph_T[u][v] = 1
+        graph_T[v][u] = 1
+    return
+
+def find_cycles(n, graph_T, T, same_weight_edges):
+    remove = []
+    for edge in range(same_weight_edges):
+        u, v = edge[1], edge[2]
+        #remove the edge we're looking at from graph_T and then DFS from u to v
+    return
+    
+
 def intersect_mst(n, G):
     T = []
-
+    graph_T = [([0] * n) for i in range(n)]
     membership = dict() #how we will check for equal sets
     for i in range(n):
-        membership[i] = []
+        membership[i] = [i]
  
     edges = []
     for i in range(n):
         for j in range(i + 1, n): #looks at top half only, no need to do others
-            edges.append([G[i][j], i, j])
+            weight = G[i][j]
+            if(weight != 0):
+                edges.append([weight, i, j])
     edges.sort()
-    return edges
+
+    same_weight_edges = []
+    for i in range(len(edges)):
+        if(i != (len(edges) - 1) and edges[i][0] == edges[i + 1][0]): #weight of the next edge is the same as the previous
+            intersect_mst_helper(graph_T, T, membership, edges[i])
+            same_weight_edges.append(edges[i])
+        else:
+            intersect_mst_helper(graph_T, T, membership, edges[i])
+            same_weight_edges.append(edges[i])
+            find_cycles(n, graph_T, T, same_weight_edges)
+    return T
 
 def main(input_file):
     input = read_file(input_file).splitlines()
