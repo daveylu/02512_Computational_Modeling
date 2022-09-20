@@ -5,7 +5,7 @@ desired input file.
 
 The input file must be in the exact same format as the sample files.
 
-main() will both print and return the intersection MST as a list of edges.
+main() will return the intersection MST as a list of edges.
 """
 # the following function is taken from:
 # https://www.cs.cmu.edu/~112/notes/notes-strings.html#basicFileIO
@@ -89,7 +89,7 @@ def intersect_mst(n, G):
 
 #takes as input, the name of the adjacency matrix file as a string
 #files must be in the same format as the sample files
-#prints and returns the intersection MST as a list of edges
+#returns the intersection MST as a list of edges
 def main(input_file):
     input = read_file(input_file).splitlines()
     
@@ -101,5 +101,4 @@ def main(input_file):
         for j in range(n):
             G[i - 1][j] = int(input[i][j])
 
-    print(intersect_mst(n, G))
     return intersect_mst(n, G)
