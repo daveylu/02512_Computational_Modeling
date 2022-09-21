@@ -39,10 +39,11 @@ def remove_cycle_edges(n, graph_T, T, edges):
         #if we find that the edge is part of a cycle: mark for deletion
             remove.append((u, v))
     for edge in remove: #delete marked edges
-        T.remove(edge)
-        u, v = edge
-        graph_T[u][v] = 0
-        graph_T[v][u] = 0
+        if(edge in T):
+            T.remove(edge)
+            u, v = edge
+            graph_T[u][v] = 0
+            graph_T[v][u] = 0
     return
 
 #adds an edge to the MST and updates the membership dictionary 
