@@ -12,32 +12,6 @@ def read_file(path):
     with open(path, "rt") as f:
         return f.read()
 
-def repr2dList(L):
-    if (L == []): return '[]'
-    output = [ ]
-    rows = len(L)
-    cols = max([len(L[row]) for row in range(rows)])
-    M = [['']*cols for row in range(rows)]
-    for row in range(rows):
-        for col in range(len(L[row])):
-            M[row][col] = repr(L[row][col])
-    colWidths = [0] * cols
-    for col in range(cols):
-        colWidths[col] = max([len(M[row][col]) for row in range(rows)])
-    output.append('[\n')
-    for row in range(rows):
-        output.append(' [ ')
-        for col in range(cols):
-            if (col > 0):
-                output.append(', ' if col < len(L[row]) else '  ')
-            output.append(M[row][col].rjust(colWidths[col]))
-        output.append((' ],' if row < rows-1 else ' ]') + '\n')
-    output.append(']')
-    return ''.join(output)
-
-def print2dList(L):
-    print(repr2dList(L))
-
 #performs DFS on a given graph.
 #returns True if we can find the target from the start
 def DFS(n, G, start, target):
@@ -72,6 +46,7 @@ def remove_cycle_edges(n, graph_T, T, edges):
             graph_T[v][u] = 0
     return
 
+#update memberships
 def update_membership(n, G, membership):
     for i in range(n):
         for j in range(i + 1, n):
@@ -85,9 +60,6 @@ def update_membership(n, G, membership):
 def insert_edge(graph_T, T, membership, edge):
     u, v = edge[1], edge[2]
     if(membership[u] != membership[v]):
-        # membership[v] += membership[u]      #to fix adding bug: only update membership 
-        # for x in membership[v]:             #after adding all of the edges of same weight?
-        #     membership[x] = membership[v]
         T.append((u, v))
         graph_T[u][v] = 1
         graph_T[v][u] = 1
@@ -108,7 +80,6 @@ def intersect_mst(n, G):
             if(weight != 0):
                 edges.append([weight, i, j])
     edges.sort()
-    print("edges =", edges)
 
     same_weight_edges = [] #contains the edges we may need to delete later
     for i in range(len(edges)):
@@ -118,7 +89,7 @@ def intersect_mst(n, G):
             same_weight_edges.append(edges[i])
         else:
             insert_edge(graph_T, T, membership, edges[i])
-            update_membership(n, graph_T, membership)
+            update_membership(n, graph_T, membership)   #only update memberships now
             same_weight_edges.append(edges[i])
             remove_cycle_edges(n, graph_T, T, same_weight_edges) #the intersect part
             same_weight_edges = []
@@ -144,4 +115,4 @@ def main(input_file):
     print("MST edges =", MST)
     return MST
 
-main("test3.txt")
+main("test2.txt")
