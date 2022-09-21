@@ -1,9 +1,11 @@
 import copy
 import sys
 """
-To run the code: in a CLI, call: python prob4.py {insert file name here}
+To run the code in a terminal, call: python prob4.py {insert file name here}
 
-The input file must be in the exact same format as the sample files.
+The input file must be in the EXACT SAME FORMAT as the sample files.
+(number of vertices at the top, then the adjacency matrix, with numbers split
+up by two spaces and each row split up with an enter)
 """
 # the following function is taken from:
 # https://www.cs.cmu.edu/~112/notes/notes-strings.html#basicFileIO
@@ -51,12 +53,13 @@ def update_membership(n, G, membership):
     for i in range(n):
         for j in range(i + 1, n):
             if(G[i][j] != 0):
-                membership[i] += membership[j]
-                for v in membership[i]:
-                    membership[v] = membership[i]
+                if(membership[i] != membership[j]): #prevents extra updating
+                    membership[i] += membership[j]
+                    for v in membership[i]:
+                        membership[v] = membership[i]
     return
 
-#adds an edge to the MST and updates the membership dictionary 
+#adds an edge to the MST if they are not already connected
 def insert_edge(graph_T, T, membership, edge):
     u, v = edge[1], edge[2]
     if(membership[u] != membership[v]):
@@ -86,6 +89,7 @@ def intersect_mst(n, G):
         if(i != (len(edges) - 1) and edges[i][0] == edges[i + 1][0]):
         #if weight of the next edge is the same as the previous
             insert_edge(graph_T, T, membership, edges[i])
+            #not updating the memberships until we have added all edges of same weight
             same_weight_edges.append(edges[i])
         else:
             insert_edge(graph_T, T, membership, edges[i])
@@ -95,18 +99,17 @@ def intersect_mst(n, G):
             same_weight_edges = []
     return T
 
-#takes as input, the name of the adjacency matrix file as a string
 #files must be in the same format as the sample files
 #returns the intersection MST as a list of edges
-def main(input_file):
-    # input_file = sys.argv[-1]
+def main():
+    input_file = sys.argv[-1]
     input = read_file(input_file).splitlines()
     
     n = int(input[0])                       
     for i in range(1, n + 1):               
         input[i] = input[i].split("  ")
-    G = [([0] * n) for i in range(n)]       #this section is just parsing
-    for i in range(1, n + 1):               #the file given
+    G = [([0] * n) for i in range(n)]       #this entire section is just
+    for i in range(1, n + 1):               #parsing the file given
         for j in range(n):
             G[i - 1][j] = int(input[i][j])
     
@@ -114,5 +117,3 @@ def main(input_file):
 
     print("MST edges =", MST)
     return MST
-
-main("test2.txt")
