@@ -115,5 +115,7 @@ def main():
     
     MST = intersect_mst(n, G)
 
-    print("MST edges =", MST)
+    print(MST)
     return MST
+
+main()
