@@ -39,18 +39,13 @@ def newton_raphson(A0, k0, dA, dk, r, n, points):
 
         H = numpy.empty((2, 2))
 
-        calculation = dF_dA(A + dA, k, n, points) - gradient[0][0]
-        H[0][0] = calculation / dA
-        H[0][1] = calculation / dk
+        H[0][0] = (dF_dA(A + dA, k, n, points) - gradient[0][0]) / dA
+        H[0][1] = (dF_dA(A, k + dk, n, points) - gradient[0][0]) / dk
 
-        calculation = dF_dk(A, k + dk, n, points) - gradient[1][0]
-        H[1][0] = calculation / dA
-        H[1][1] = calculation / dk
-
-        print(H)
+        H[1][0] = (dF_dk(A + dA, k, n, points) - gradient[1][0]) / dA
+        H[1][1] = (dF_dk(A, k + dk, n, points) - gradient[1][0]) / dk
 
         determinant = (H[0][0] * H[1][1]) - (H[0][1] * H[1][0])
-        print(determinant)
         
         inv_H = numpy.empty((2, 2))
         inv_H[0][0] = H[1][1]
@@ -85,9 +80,10 @@ def main(input_file = None):
     
     result = newton_raphson(A0, k0, dA, dk, r, n, points)
 
+    print(f"After {r} rounds:")
     print(f"A is approximately: {result[0]}")
-    print(f"k is approxiamtely: {result[1]}")
+    print(f"k is approximately: {result[1]}")
 
     return result
 
-main("test1.txt")
+main()
