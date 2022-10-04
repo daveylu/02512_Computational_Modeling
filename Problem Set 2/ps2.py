@@ -47,8 +47,18 @@ def newton_raphson(A0, k0, dA, dk, r, n, points):
         H[1][0] = calculation / dA
         H[1][1] = calculation / dk
 
+        print(H)
+
         determinant = (H[0][0] * H[1][1]) - (H[0][1] * H[1][0])
-        y = numpy.matmul(H, gradient) * (1/determinant)
+        print(determinant)
+        
+        inv_H = numpy.empty((2, 2))
+        inv_H[0][0] = H[1][1]
+        inv_H[0][1] = -H[0][1]
+        inv_H[1][0] = -H[1][0]
+        inv_H[1][1] = H[0][0]
+        inv_H = (1/determinant) * inv_H
+        y = numpy.matmul(inv_H, gradient)
 
         V = V - y
 
@@ -78,6 +88,6 @@ def main(input_file = None):
     print(f"A is approximately: {result[0]}")
     print(f"k is approxiamtely: {result[1]}")
 
-    return
+    return result
 
 main("test1.txt")
