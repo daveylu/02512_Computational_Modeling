@@ -41,6 +41,9 @@ def model(r, d, dt, dx, k1, k2, X, total_T):
 
             A[i] = A_part1 + A_part2 + A_part3
             B[i] = B_part1 + B_part2
+            if(A[1] < 0): A[i] = 0
+            if(B[i] < 0): B[i] = 0
+            
         A_avg = sum(A) / len(A)
         B_avg = sum(B) / len(B)
         # print(t, A_avg, B_avg)
