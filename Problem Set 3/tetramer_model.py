@@ -67,5 +67,7 @@ def main():
     plt.plot(times, B_avgs)
     plt.xlabel("Times")
     plt.ylabel("Average Concentrations")
+    plt.title("Average Concentrations vs. Time")
+    plt.legend()
     plt.show()
     return
