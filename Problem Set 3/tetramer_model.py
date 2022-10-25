@@ -12,8 +12,8 @@ def read_file(path):
         return f.read()
 
 def model(r, d, dt, dx, k1, k2, X, total_T):
-    steps = total_T // dt
-    points = (X // dx) + 1
+    steps = int(total_T / dt)
+    points = int(X / dx) + 1
     times = []
     A_avgs = []
     B_avgs = []
@@ -43,7 +43,7 @@ def model(r, d, dt, dx, k1, k2, X, total_T):
             B[i] = B_part1 + B_part2
         A_avg = sum(A) / len(A)
         B_avg = sum(B) / len(B)
-        print(t, A_avg, B_avg)
+        # print(t, A_avg, B_avg)
         times.append(t)
         A_avgs.append(A_avg)
         B_avgs.append(B_avg)
@@ -54,20 +54,23 @@ def model(r, d, dt, dx, k1, k2, X, total_T):
 def main():
     input_file = sys.argv[-1]
     input = read_file(input_file).splitlines()
-    r = input[0]
-    d = input[1]
-    dt = input[2]
-    dx = input[3]
+    r = float(input[0])
+    d = float(input[1])
+    dt = float(input[2])
+    dx = float(input[3])
+    total_T = float(input[4])
     X = 2
     k1 = 1
     k2 = 1
-    total_T = input[4]
+    
     times, A_avgs, B_avgs = model(r, d, dt, dx, k1, k2, X, total_T)
-    plt.plot(times, A_avgs)
-    plt.plot(times, B_avgs)
-    plt.xlabel("Times")
+    plt.plot(times, A_avgs, label = "A")
+    plt.plot(times, B_avgs, label = "B")
+    plt.xlabel("Time")
     plt.ylabel("Average Concentrations")
     plt.title("Average Concentrations vs. Time")
     plt.legend()
     plt.show()
     return
+
+main()
