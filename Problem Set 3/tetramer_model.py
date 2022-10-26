@@ -30,9 +30,9 @@ def model(r, d, dt, dx, k1, k2, X, total_T):
 
     for step in range(steps):
         t = step * dt
-        z1 = random.normalvariate(0, 1)
-        z2 = random.normalvariate(0, 1)
         for i in range(1, points - 1):
+            z1 = random.normalvariate(0, 1)
+            z2 = random.normalvariate(0, 1)
             A_part1 = A[i] + dt * d * ((A[i + 1] + A[i - 1] - 2*A[i]) / dx**2)
             A_part2 = 4 * dt * (k2 * B[i] - k1 * A[i]**4)
             A_part3 = 2 * r * math.sqrt(dt) * (z2 * math.sqrt(k2 * B[i]) - z1 * math.sqrt(k1 * A[i]**4))
