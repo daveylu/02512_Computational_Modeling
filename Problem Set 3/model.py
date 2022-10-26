@@ -64,15 +64,15 @@ def main():
     dx = float(input[3])
     total_T = float(input[4])
     X = 2
-    k1 = 1
-    k2 = 1
+    k1 = 0.5
+    k2 = 0.5
     
     times, A_avgs, B_avgs = model(r, d, dt, dx, k1, k2, X, total_T)
     plt.plot(times, A_avgs, label = "A")
     plt.plot(times, B_avgs, label = "B")
     plt.xlabel("Time")
     plt.ylabel("Average Concentrations")
-    plt.title("Average Concentrations vs. Time")
+    plt.title(f"Average Concentrations vs. Time\nr = {r}, d = {d}, dt = {dt}, dx = {dx}, T = {total_T}, k1 = {k1}, k2 = {k2}")
     plt.legend()
     plt.show()
     return
