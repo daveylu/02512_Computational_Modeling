@@ -47,7 +47,7 @@ def model(r, d, dt, dx, k1, k2, X, total_T):
             
         A_avg = sum(A) / len(A)
         B_avg = sum(B) / len(B)
-        # print(t, A_avg, B_avg)
+        print(t, A_avg, B_avg)
         times.append(t)
         A_avgs.append(A_avg)
         B_avgs.append(B_avg)
