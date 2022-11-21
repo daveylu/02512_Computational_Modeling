@@ -38,7 +38,6 @@ def main():
         B.append(int(b))
         Y.append(0)
     
-    
     f = em(H, B, Y, f, r)
     print(f"f = {f}")
     return
